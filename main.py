@@ -1,3 +1,6 @@
+import os
+import smtplib
+
 from flask import Flask, render_template, request
 import requests
 
@@ -5,6 +8,9 @@ import requests
 posts = requests.get("https://api.npoint.io/c790b4d5cab58020d391").json()
 
 app = Flask(__name__)
+
+my_email = os.environ.get("email", "Couldn't find email address")
+password = os.environ.get("password", "Couldn't find password")
 
 
 @app.route('/')
@@ -30,6 +36,15 @@ def contact():
         print(email)
         print(phone)
         print(message)
+
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            # Secure connection with Transport Layer Security
+            connection.starttls()
+            # Login to account
+            connection.login(user=my_email, password=password)
+            # Send email
+            connection.sendmail(from_addr=email, to_addrs=my_email, msg=f"Subject:New Message\n\n{message}")
+
         return render_template("contact.html", post_successful=True)
 
 
