@@ -9,8 +9,12 @@
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="page-heading">
-          <h1>Contact Me</h1>
-          <span class="subheading">Have questions? I have answers.</span>
+          {% if post_successful == True %}
+            <h1> Successfully sent your message </h1>
+          {% else %}
+            <h1>Contact Me</h1>
+            <span class="subheading">Have questions? I have answers.</span>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -32,6 +36,8 @@
           <form
             id="contactForm"
             name="sentMessage"
+            action="/contact"
+            method="post"
           >
             <div class="form-floating">
               <input
